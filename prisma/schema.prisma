@@ -1,0 +1,190 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// profile table
+model Profile {
+  id		      String			@id @default(uuid())
+  bio		      String?		
+  user		    User		    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId	    String		  @unique
+  createdAt	  DateTime	  @default(now())
+  UpdatedAt   DateTime    @default(now())
+//  deletedAt   DateTime?
+  deleted     Boolean     @default(false)
+}
+
+// user table
+model User {
+  id		            String			        @id @default(uuid())
+  email		          String		          @unique
+  password          String      
+  name		          String?
+  role              Role                @default(USER)
+  profile	          Profile?
+  city              City[]
+  vehicleType       VehicleType[]
+  vehicleCondition  VehicleCondition[]
+  vehicleMake       VehicleMake[]
+  fuelType          FuelType[]
+  vehicleOption     VehicleOption[]
+  vehicleImage      VehicleImage[]
+  transmission      Transmission[]
+  vehicleDetail     VehicleDetail[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @default(now())
+//  deletedAt         DateTime?
+  deleted           Boolean             @default(false)
+}
+
+// Roles fields
+enum Role {
+  USER
+  ADMIN
+}
+
+// city table
+model City {
+  id              String          @id @default(uuid())
+  name            String          @unique
+  vehicleDetail   VehicleDetail[]
+  user            User            @relation(fields: [addedBy], references: [id], onDelete: Cascade)
+  addedBy         String    
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @default(now())
+//  deletedAt       DateTime?
+  deleted         Boolean         @default(false)
+}
+
+// vehicle type table
+model VehicleType {
+  id              String          @id @default(uuid())
+  vehicleType     String          @unique
+  vehicleDetails  VehicleDetail[]
+  user            User            @relation(fields: [addedBy], references: [id], onDelete: Cascade)
+  addedBy         String
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @default(now())
+//  deletedAt       DateTime?
+  deleted         Boolean         @default(false)
+}
+
+// vehicle condition table
+model VehicleCondition {
+  id            String            @id @default(uuid())
+  condition     String            @unique
+  vehicleDetail VehicleDetail[]
+  user          User              @relation(fields: [addedBy], references: [id], onDelete: Cascade)
+  addedBy       String
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @default(now())
+//  deletedAt     DateTime?
+  deleted       Boolean           @default(false)
+}
+
+// vehicle make
+model VehicleMake {
+  id            String            @id @default(uuid())
+  vehicleMake   String            @unique
+  vehicleDetail VehicleDetail[]
+  user          User              @relation(fields: [addedBy], references: [id], onDelete: Cascade)
+  addedBy       String    
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @default(now())
+//  deletedAt     DateTime?
+  deleted       Boolean           @default(false)
+}
+
+// fule type
+model FuelType {
+  id              String	          @id @default(uuid())
+  fuelType        String            @unique
+  vehicleDetail   VehicleDetail[]
+  user            User              @relation(fields: [addedBy], references: [id], onDelete: Cascade)
+  addedBy         String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now())
+//  deletedAt       DateTime?
+  deleted         Boolean           @default(false)
+}
+
+// vehicle options table
+model VehicleOption {
+  id              String            @id @default(uuid())
+  vehicleOption   String            @unique
+  vehicleDetail   VehicleDetail[]
+  user            User              @relation(fields: [addedBy], references: [id], onDelete: Cascade)
+  addedBy         String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now())
+//  deletedAt       DateTime?
+  deleted         Boolean           @default(false)
+}
+
+// vehicle image
+model VehicleImage {
+  id              String    @id @default(uuid())
+  imageName       String
+  user            User      @relation(fields: [addedBy], references: [id], onDelete: Cascade)
+  addedBy         String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now())
+//  deletedAt       DateTime?
+  deleted         Boolean   @default(false)
+}
+
+model Transmission {
+  id            String            @id @default(uuid())
+  name          String
+  vehicleDetail VehicleDetail[]
+  user          User              @relation(fields: [addedBy], references: [id], onDelete: Cascade)
+  addedBy       String
+  CreatedAt     DateTime          @default(now())
+  updatedAt     DateTime          @default(now())
+//  deletedAt     DateTime?
+  deleted       Boolean           @default(false)
+}
+
+// vehicle details
+model VehicleDetail {
+  id                  String            @id @default(uuid())
+  name                String            @unique
+  contact             String
+  city                City              @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  cityId              String
+  vehicleType         VehicleType       @relation(fields: [vehicleTypeId], references: [id], onDelete: Cascade)
+  vehicleTypeId       String
+  vehicleCondition    VehicleCondition  @relation(fields: [vehicleConditionId], references: [id], onDelete: Cascade)
+  vehicleConditionId  String
+  vehicleMake         VehicleMake       @relation(fields: [vehicleMakeId], references: [id], onDelete: Cascade)
+  vehicleMakeId       String
+  model               String
+  isPublished         Boolean           @default(false)
+  slug                String
+  manufactureYear     String
+  price               Decimal?
+  ongoingLease        Boolean           @default(false)
+  transmission        Transmission      @relation(fields: [transmissionId], references: [id], onDelete: Cascade)
+  transmissionId      String
+  fuelType            FuelType          @relation(fields: [fuelTypeId], references: [id], onDelete: Cascade)
+  fuelTypeId          String
+  engineCapacity      String?
+  milage              Float
+  vehicleOptions      VehicleOption     @relation(fields: [vehicleOptionsId], references: [id], onDelete: Cascade)
+  vehicleOptionsId    String
+  info                String
+  user                User              @relation(fields: [addedBy], references: [id], onDelete: Cascade)
+  addedBy             String
+  CreatedAt           DateTime          @default(now())
+  updatedAt           DateTime          @default(now())
+//  deletedAt           DateTime?
+  deleted             Boolean           @default(false)
+} 
