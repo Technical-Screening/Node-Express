@@ -1,0 +1,10 @@
+# library folder structure that need to be installed
+/node_modules
+# post compiled sucrase folder
+/dist
+# dotenv file, to make all configurations available only at local
+.env
+# library index file
+# yarn.lock
+# prevent logs
+/src/app/logs
