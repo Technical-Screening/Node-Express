@@ -1,0 +1,58 @@
+{
+  "name": "admin-panel-node-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "nodemon src/server.js --ignore __tests__",
+    "debug": "node --inspect-brk -r sucrase/register src/server.js",
+    "lint": "eslint \"**/*.js\" --ignore-pattern node_modules/ --ignore-pattern dist/",
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "start": "node ./dist/server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:mysql": "dotenv -e .env.test jest -i",
+    "migrate:mysql": "dotenv -e .env.test -- npx prisma migrate dev --name mysql-init"
+  },
+  "dependencies": {
+    "@prisma/client": "3.14.0",
+    "@sindresorhus/slugify": "^2.1.0",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.5-lts.1",
+    "multiparty": "^4.2.3",
+    "prisma": "^3.14.0",
+    "slugify": "^1.6.5",
+    "sucrase": "^3.21.0",
+    "winston": "^3.8.1",
+    "youch": "^3.2.0",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.18.9",
+    "@faker-js/faker": "^7.3.0",
+    "@jest-mock/express": "^2.0.1",
+    "babel-jest": "^28.1.3",
+    "dotenv-cli": "^6.0.0",
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "jest": "^28.1.3",
+    "jest-mock-extended": "^2.0.7",
+    "node-mocks-http": "^1.11.0",
+    "nodemon": "^2.0.16",
+    "presets": "^0.1.0",
+    "supertest": "^6.2.4",
+    "ts-jest": "^28.0.7"
+  },
+  "eslintIgnore": [
+    "*.spec.js",
+    "*.test.js",
+    "world.js"
+  ]
+}

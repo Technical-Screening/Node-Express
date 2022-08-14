@@ -1,0 +1,13 @@
+# set the version of docker compose to use
+version: '3.9'
+
+services:
+  mysql-testing:
+    image: mysql:latest
+    restart: always
+    container_name: integration-tests-autoescape
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: integration_testing_autoescape
+    ports:
+      - "3310:3306"
